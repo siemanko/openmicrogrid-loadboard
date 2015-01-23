@@ -9,8 +9,8 @@
 #define	LOADMANAGER_H
 
 void initializePorts();
-
-void set_light_port(int on);
+int outputs_disabled();
+void set_light_port_intensity(float percentage);
 void set_port1(int on);
 void set_port2(int on);
 

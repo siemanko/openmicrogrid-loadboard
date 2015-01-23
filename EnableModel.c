@@ -10,6 +10,12 @@ double light_port_intensity;
 int port1_state;
 int port2_state;
 
+int outputs_disabled() {
+    return port1_state == 0 &&
+           port2_state == 0 &&
+           abs(light_port_intensity) < 1e-10;
+}
+
 void initializePorts(){
     TRISEbits.TRISE7 = 0;    //make 12v enable an output
     TRISGbits.TRISG6 = 0;   //make 5v enable an output

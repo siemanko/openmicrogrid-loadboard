@@ -4,11 +4,6 @@
 #include "ReadingModel.h"
 #include "CommBoardMessageConsts.h"
 
-double output_current;
-double network_voltage;
-double output_voltage;
-double phone_voltage;
-
 void receiveMessageComm(int msg){
 
     switch(msg){
@@ -34,17 +29,17 @@ void receiveMessageComm(int msg){
 
         //Following cases are sensor values
         case GET_CURRENT_FROM_LOAD_BOARD_MSG: ;
-            sendPollFloatToComm(output_current);
+            sendPollFloatToComm(get_output_current());
             //sendPollFloatToComm(9.5);
             break;
         case GET_LINE_VOLTAGE_FROM_LOAD_BOARD_MSG: ;
-            sendPollFloatToComm(network_voltage);
+            sendPollFloatToComm(get_network_voltage());
             break;            
         case GET_PORT1_VOLTAGE_FROM_LOAD_BOARD_MSG: ;
-            sendPollFloatToComm(output_voltage);
+            sendPollFloatToComm(get_output_voltage());
             break;
         case GET_PORT2_VOLTAGE_FROM_LOAD_BOARD_MSG: ;
-            sendPollFloatToComm(phone_voltage);
+            sendPollFloatToComm(get_phone_voltage());
             break;
         default:
            break;

@@ -1,4 +1,4 @@
-//EXPERIMENTAL
+//EXPERIMENTA
 
 #include "p33FJ64GS406.h"
 #include <libq.h>
@@ -12,10 +12,10 @@
 void __attribute__((__interrupt__, no_auto_psv)) _ADCP1Interrupt()
 {
     
-    double current_reading = (ADCBUF3*3.3/1024*(20.0/22.0));
-    double network_voltage = -15*(ADCBUF0*3.3/1024-1.75)+30;
-    double output_voltage = ADCBUF1*3.3/1024*(7.2);
-    double phone_voltage = ADCBUF2*3.3/1024*(69.0/22.0);
+    double current_reading = ((double)ADCBUF3*3.3/1024.0*(20.0/22.0));
+    double network_voltage = -15.0*((double)ADCBUF0*3.3/1024.0-1.75)+30.0;
+    double output_voltage = (double)ADCBUF1*3.3/1024.0*(7.2);
+    double phone_voltage = (double)ADCBUF2*3.3/1024.0*(69.0/22.0);
 
     on_output_current_reading(current_reading);
     on_network_voltage_reading(network_voltage);
