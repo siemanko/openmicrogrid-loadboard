@@ -4,9 +4,11 @@
 #include <stdlib.h>
 
 #include "EnableModel.h"
+#include "utils.h"
+
 
 double output_current;
-double base_line_output_current;
+double base_line_output_current = 0.04;
 
 double network_voltage;
 double output_voltage;
@@ -15,11 +17,11 @@ double phone_voltage;
 
 
 void on_output_current_reading(double reading) {
-    output_current = ADC_FORGET * reading +
-                     (1.0 - ADC_FORGET) * output_current;
+    output_current = (ADC_FORGET * reading +
+                     (1.0 - ADC_FORGET) * output_current) ;
 
     // only update it when no appliances are one.
-    if (outputs_disabled()) {
+   if (outputs_disabled()) {
         base_line_output_current = ADC_FORGET * reading +
                                   (1.0 - ADC_FORGET) * base_line_output_current;
     }
@@ -43,7 +45,7 @@ void on_phone_voltage_reading(double reading) {
 
 
 double get_output_current() {
-    return max(0.0, output_current - base_line_output_current);
+    return  double_max(0.0, output_current - base_line_output_current);
 }
 
 double get_network_voltage() {

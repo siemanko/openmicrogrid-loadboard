@@ -13,6 +13,7 @@
       <itemPath>init.h</itemPath>
       <itemPath>EnableModel.h</itemPath>
       <itemPath>ReadingModel.h</itemPath>
+      <itemPath>utils.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -31,6 +32,7 @@
       <itemPath>init.c</itemPath>
       <itemPath>EnableModel.c</itemPath>
       <itemPath>ReadingModel.c</itemPath>
+      <itemPath>utils.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

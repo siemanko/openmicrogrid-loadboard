@@ -28,6 +28,7 @@ void timer1_setup (void);
 
 int main()
 {
+    set_communication_enable(0);
     init_clock();
     init_PWM();
     timer1_setup();
@@ -36,9 +37,15 @@ int main()
     initializePorts();
     initSPICommBoard();
 
-   
+    // comms off to get a sample of all appliances off current.
+    long long i;
+    for(i=0; i<1000000LL; ++i);
+    set_communication_enable(1);
+    set_light_port_intensity(0.75);
+
 
     while(1){
+        //set_light_port_intensity(0.5);
         //readingsUpdateStep();
     }
 }

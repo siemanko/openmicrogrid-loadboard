@@ -4,8 +4,14 @@
 #include "ReadingModel.h"
 #include "CommBoardMessageConsts.h"
 
+static int communications_on = 0;
+void set_communication_enable(int enabled) {
+    communications_on = enabled;
+}
+
 
 void receiveMessageComm(int msg){
+    if(communications_on == 0) return;
 
     switch(msg){
 

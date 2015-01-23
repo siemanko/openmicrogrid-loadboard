@@ -5,16 +5,21 @@
 #include <dsp.h>
 #include <math.h>
 
+#include "utils.h"
+
 
 double light_port_intensity;
 int port1_state;
 int port2_state;
 
+
+
 int outputs_disabled() {
     return port1_state == 0 &&
            port2_state == 0 &&
-           abs(light_port_intensity) < 1e-10;
+           double_abs(light_port_intensity) < 1E-5;
 }
+
 
 void initializePorts(){
     TRISEbits.TRISE7 = 0;    //make 12v enable an output
@@ -30,7 +35,7 @@ void initializePorts(){
 }
 
 void set_light_port_intensity(float percentage) {
-    if (abs(light_port_intensity - percentage) < 1e-10) return;
+    //if (abs(light_port_intensity - percentage) < 1e-10) return;
 
     double max_value = 0.8 * PTPER;
     PDC4 = (unsigned int)(percentage * max_value);

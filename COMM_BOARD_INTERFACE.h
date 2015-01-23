@@ -10,5 +10,8 @@
 
 void receiveMessageComm(int msg);
 
+void set_communication_enable(int enabled);
+
+
 #endif	/* COMM_BOARD_INTERFACE_H */
 

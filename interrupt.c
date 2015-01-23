@@ -17,10 +17,10 @@ void __attribute__((__interrupt__, no_auto_psv)) _ADCP1Interrupt()
     uint16_t output_adc = ADCBUF1;
     uint16_t phone_adc = ADCBUF2;
 
-    if (current_adc > 0) {
-        double current_reading = ((double)current_adc*3.3/1024.0*(20.0/22.0));
-        on_output_current_reading(current_reading);
-    }
+    
+    double current_reading = ((double)current_adc*3.3/1024.0*(20.0/22.0));
+    on_output_current_reading(current_reading);
+
 
     if (network_adc > 0) {
         double network_voltage = -15.0*((double)network_adc*3.3/1024.0-1.75)+30.0;
