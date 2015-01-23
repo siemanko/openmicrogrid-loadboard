@@ -7,20 +7,11 @@
 #include "init.h"
 #include "ReadingModel.h"
 
-unsigned int TimerInterruptCount = 0;
-
 #define refv 2.1f
-
-void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt()
-{
-
-  TimerInterruptCount ++; 	// Increment interrupt counter
-  IFS0bits.T1IF = 0; 		// Clear Interrupt Flag
-}
 
 void __attribute__((__interrupt__, no_auto_psv)) _ADCP1Interrupt()
 {
-
+    
     double current_reading = (ADCBUF3*3.3/1024*(20.0/22.0));
     double network_voltage = -15*(ADCBUF0*3.3/1024-1.75)+30;
     double output_voltage = ADCBUF1*3.3/1024*(7.2);
