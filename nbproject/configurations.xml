@@ -4,13 +4,15 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>COMM_BOARD_INTERFACE.h</itemPath>
-      <itemPath>LoadManager.h</itemPath>
-      <itemPath>SPI_COMM_BOARD_DRIVER.h</itemPath>
-      <itemPath>SensorManager.h</itemPath>
-      <itemPath>SerialCommunication.h</itemPath>
+      <logicalFolder name="f1" displayName="Communications" projectFiles="true">
+        <itemPath>COMM_BOARD_INTERFACE.h</itemPath>
+        <itemPath>CommBoardMessageConsts.h</itemPath>
+        <itemPath>SPI_COMM_BOARD_DRIVER.h</itemPath>
+        <itemPath>SerialCommunication.h</itemPath>
+      </logicalFolder>
       <itemPath>init.h</itemPath>
-      <itemPath>CommBoardMessageConsts.h</itemPath>
+      <itemPath>EnableModel.h</itemPath>
+      <itemPath>ReadingModel.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -19,14 +21,16 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>COMM_BOARD_INTERFACE.c</itemPath>
-      <itemPath>LoadManager.c</itemPath>
-      <itemPath>SPI_COMM_BOARD_DRIVER.c</itemPath>
-      <itemPath>SensorManager.c</itemPath>
-      <itemPath>SerialCommunication.c</itemPath>
+      <logicalFolder name="f1" displayName="Communications" projectFiles="true">
+        <itemPath>COMM_BOARD_INTERFACE.c</itemPath>
+        <itemPath>SerialCommunication.c</itemPath>
+        <itemPath>SPI_COMM_BOARD_DRIVER.c</itemPath>
+      </logicalFolder>
       <itemPath>interrupt.c</itemPath>
       <itemPath>main1.c</itemPath>
       <itemPath>init.c</itemPath>
+      <itemPath>EnableModel.c</itemPath>
+      <itemPath>ReadingModel.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

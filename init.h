@@ -7,11 +7,9 @@
 #include "dsp.h"
 //#include "define.h"
 
+void init_clock(void);
 void Delay_ms(unsigned int delay);
 void Delay_us(unsigned int delay);
 void ADC_init(void);
-
-float getOutputCurrent();
-void setOutputCurrent(float cc);
 
 #endif	/* INIT_H */

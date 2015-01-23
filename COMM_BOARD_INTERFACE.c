@@ -1,52 +1,52 @@
 #include "COMM_BOARD_INTERFACE.h"
 #include "SPI_COMM_BOARD_DRIVER.h"
-#include "SensorManager.h"
-#include "LoadManager.h"
+#include "EnableModel.h"
+#include "ReadingModel.h"
 #include "CommBoardMessageConsts.h"
+
+double output_current;
+double network_voltage;
+double output_voltage;
+double phone_voltage;
 
 void receiveMessageComm(int msg){
 
     switch(msg){
 
         case TURN_LIGHT_ON_MSG:
-            turnLightOn();
+            set_light_port_intensity(0.5);
             break;
         case TURN_LIGHT_OFF_MSG:
-            turnLightOff();
+            set_light_port_intensity(0.0);
             break;
         case TURN_PORT1_ON_MSG:
-            turnPort1On();
+            set_port1(1);
             break;
         case TURN_PORT1_OFF_MSG:
-            turnPort1Off();
+            set_port1(0);
             break;
         case TURN_PORT2_ON_MSG:
-            turnPort2On();
+            set_port2(1);
             break;
         case TURN_PORT2_OFF_MSG:
-            turnPort2Off();
+            set_port2(0);
             break;
 
         //Following cases are sensor values
         case GET_CURRENT_FROM_LOAD_BOARD_MSG: ;
-            float currentReading = getCurrentSensorReading();
-            sendPollFloatToComm(currentReading);
+            sendPollFloatToComm(output_current);
             //sendPollFloatToComm(9.5);
             break;
         case GET_LINE_VOLTAGE_FROM_LOAD_BOARD_MSG: ;
-            float inputVoltage = getInputLineVolatage();
-            sendPollFloatToComm(inputVoltage);
+            sendPollFloatToComm(network_voltage);
             break;            
         case GET_PORT1_VOLTAGE_FROM_LOAD_BOARD_MSG: ;
-            float port1Voltage = getPort1Voltage();
-            sendPollFloatToComm(port1Voltage);
+            sendPollFloatToComm(output_voltage);
             break;
         case GET_PORT2_VOLTAGE_FROM_LOAD_BOARD_MSG: ;
-            float port2Voltage = getPort2Voltage();
-            sendPollFloatToComm(port2Voltage);
+            sendPollFloatToComm(phone_voltage);
             break;
         default:
-
            break;
     }
 

@@ -10,14 +10,9 @@
 
 void initializePorts();
 
-void turnLightOn();
-void turnLightOff();
-
-void turnPort1On();
-void turnPort1Off();
-
-void turnPort2On();
-void turnPort2Off();
+void set_light_port(int on);
+void set_port1(int on);
+void set_port2(int on);
 
 
 #endif	/* LOADMANAGER_H */

@@ -3,17 +3,13 @@
 #include "p33FJ64GS406.h"
 #include <libq.h>
 #include <dsp.h>
+
 #include "init.h"
+#include "ReadingModel.h"
 
 unsigned int TimerInterruptCount = 0;
 
 #define refv 2.1f
-
-float ADCvalue0;
-float ADCvalue1;
-float ADCvalue2;
-int led_count = 0;
-float old_current_value  = 0.0;
 
 void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt()
 {
@@ -25,18 +21,15 @@ void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt()
 void __attribute__((__interrupt__, no_auto_psv)) _ADCP1Interrupt()
 {
 
-    //One of these input current, one of these input current, one input voltage
-    //(from the grid)
-    //ADCvalue1=ADCBUF2*3.3/1024;     // 5 out sense
-    //ADCvalue2=ADCBUF3*3.3/1024;
-    //ADCvalue1=ADCBUF2*3.3/1024;        //I_S sense, current going into the load
-    //float ADCvalue3 = ADCBUF1*3.3/1024;   //12V out sense
-    //ADCvalue0 = ADCBUF0;   //input voltage sense
+    double current_reading = (ADCBUF3*3.3/1024*(20.0/22.0));
+    double network_voltage = -15*(ADCBUF0*3.3/1024-1.75)+30;
+    double output_voltage = ADCBUF1*3.3/1024*(7.2);
+    double phone_voltage = ADCBUF2*3.3/1024*(69.0/22.0);
 
-    float new_output_current = (0.9*old_current_value) + 0.1*(ADCBUF3*3.3/1024*(20.0/22.0));
-    setOutputCurrent(new_output_current);
-    old_current_value = new_output_current;
-
+    on_output_current_reading(current_reading);
+    on_network_voltage_reading(network_voltage);
+    on_output_voltage_reading(output_voltage);
+    on_phone_voltage_reading(phone_voltage);
 
     IFS6bits.ADCP1IF = 0; //clear interrupt flag
     ADSTATbits.P1RDY = 0; //Clear ready bit
