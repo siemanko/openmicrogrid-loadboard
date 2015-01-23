@@ -43,7 +43,7 @@ int main()
     long long i;
     for(i=0; i<1000000LL; ++i);
     set_communication_enable(1);
-    set_light_port_intensity(0.75);
+    // set_light_port_intensity(0.75);
 
 
     while(1){
