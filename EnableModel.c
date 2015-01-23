@@ -20,6 +20,10 @@ void initializePorts(){
     TRISEbits.TRISE7 = 0;    //make 12v enable an output
     TRISGbits.TRISG6 = 0;   //make 5v enable an output
 
+    light_port_intensity = 1000.0;
+    port1_state = 1000;
+    port2_state = 1000;
+
     set_light_port_intensity(0.0);
     set_port1(0);
     set_port2(0);

@@ -72,7 +72,7 @@ void ADC_init ()
 
     ADSTATbits.P1RDY   = 0; 	 // Clear Pair 1 data ready bit
     ADCPC0bits.IRQEN1  = 1;      // Enable ADC Interrupt for pair 1
-    ADCPC0bits.TRGSRC1 = 12; 	 // ADC Pair 1 triggered by PWM4
+    ADCPC0bits.TRGSRC1 = 12; 	 // ADC Pair 1 triggered by timer1
 
     ADCONbits.ADON = 1;		 // Enable the ADC Module early for ADC Settling Time
 }
@@ -93,8 +93,8 @@ void init_PWM()
     ALTDTR4 = 30;    						/* ALTDeadtime = (65ns / 1.04ns) where 65ns is desired deadtime */
     PHASE4 = 0;     			            /* No phase shift */
 
-    TRGCON4bits.TRGDIV = 1000;       // Trigger interrupt generated once every 15 PWM cycle
-    TRGCON4bits.TRGSTRT = 1;      // Trigger generated after waiting 0 PWM cycles
+    // TRGCON4bits.TRGDIV = 1000;       // Trigger interrupt generated once every 15 PWM cycle
+    // TRGCON4bits.TRGSTRT = 1;      // Trigger generated after waiting 0 PWM cycles
 
     PTCONbits.PTEN = 1;			   			/* Enable the PWM Module */
 

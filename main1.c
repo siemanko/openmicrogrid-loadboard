@@ -36,6 +36,8 @@ int main()
     initializePorts();
     initSPICommBoard();
 
+   
+
     while(1){
         //readingsUpdateStep();
     }
