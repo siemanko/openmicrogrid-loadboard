@@ -20,6 +20,7 @@ int SPI1_WriteFlag;     //To indicate that we are sending data and the interrupt
 int outputTOCommmData;
 
 static void * float_ptr;
+int remaining = 0;
 static int outputDataInt;
 static float outputDataFloat;
 
@@ -83,6 +84,7 @@ void sendPollFloatToComm(float data){
     outputDataFloat = data;
     float_ptr = &outputDataFloat;
     float_ptr+=3;
+    remaining = 4;
 }
 
 void sendFloatToComm(float data){
@@ -136,10 +138,16 @@ void flushFIFOBufferSPI1(void){
 void __attribute__((__interrupt__,auto_psv)) _SPI1Interrupt(void){
 
     int buffer = SPI1BUF;
-    SPI1BUF = *(char *)float_ptr;
-    //delayDebug(10);
+    if (remaining > 0) {
+        SPI1BUF = *(char *)float_ptr;
+        //delayDebug(10);
 
-    float_ptr--;
+        float_ptr--;
+        remaining--;
+    } else {
+        SPI1BUF = rand()%256;
+    }
+
 
     //Simple protocol that assumes all the trash bytes we receive (i.e. real messages) are not zero
     if(buffer != 0){

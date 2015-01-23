@@ -10,9 +10,10 @@ void set_communication_enable(int enabled) {
 }
 
 
+
+
 void receiveMessageComm(int msg){
     if(communications_on == 0) return;
-
     switch(msg){
 
         case TURN_LIGHT_ON_MSG:

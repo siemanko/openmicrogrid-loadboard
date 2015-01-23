@@ -28,11 +28,13 @@ void timer1_setup (void);
 
 int main()
 {
+    srand(0);
     set_communication_enable(0);
     init_clock();
     init_PWM();
     timer1_setup();
     ADC_init();
+    initUART2();
 
     initializePorts();
     initSPICommBoard();
