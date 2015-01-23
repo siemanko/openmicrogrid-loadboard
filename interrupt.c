@@ -3,6 +3,7 @@
 #include "p33FJ64GS406.h"
 #include <libq.h>
 #include <dsp.h>
+#include <stdint.h>
 
 #include "init.h"
 #include "ReadingModel.h"
@@ -11,16 +12,30 @@
 
 void __attribute__((__interrupt__, no_auto_psv)) _ADCP1Interrupt()
 {
-    
-    double current_reading = ((double)ADCBUF3*3.3/1024.0*(20.0/22.0));
-    double network_voltage = -15.0*((double)ADCBUF0*3.3/1024.0-1.75)+30.0;
-    double output_voltage = (double)ADCBUF1*3.3/1024.0*(7.2);
-    double phone_voltage = (double)ADCBUF2*3.3/1024.0*(69.0/22.0);
+    uint16_t current_adc = ADCBUF3;
+    uint16_t network_adc = ADCBUF0;
+    uint16_t output_adc = ADCBUF1;
+    uint16_t phone_adc = ADCBUF2;
 
-    on_output_current_reading(current_reading);
-    on_network_voltage_reading(network_voltage);
-    on_output_voltage_reading(output_voltage);
-    on_phone_voltage_reading(phone_voltage);
+    if (current_adc > 0) {
+        double current_reading = ((double)current_adc*3.3/1024.0*(20.0/22.0));
+        on_output_current_reading(current_reading);
+    }
+
+    if (network_adc > 0) {
+        double network_voltage = -15.0*((double)network_adc*3.3/1024.0-1.75)+30.0;
+        on_network_voltage_reading(network_voltage);
+    }
+
+    if (output_adc > 0) {
+        double output_voltage = (double)output_adc*3.3/1024.0*(7.2);
+        on_output_voltage_reading(output_voltage);
+    }
+
+    if (phone_adc > 0) {
+        double phone_voltage = (double)phone_adc*3.3/1024.0*(69.0/22.0);
+        on_phone_voltage_reading(phone_voltage);
+    }
 
     IFS6bits.ADCP1IF = 0; //clear interrupt flag
     ADSTATbits.P1RDY = 0; //Clear ready bit

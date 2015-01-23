@@ -4,6 +4,7 @@
 #include "ReadingModel.h"
 #include "CommBoardMessageConsts.h"
 
+
 void receiveMessageComm(int msg){
 
     switch(msg){
