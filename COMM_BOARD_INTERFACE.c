@@ -10,14 +10,12 @@ void set_communication_enable(int enabled) {
 }
 
 
-
-
 void receiveMessageComm(int msg){
     if(communications_on == 0) return;
     switch(msg){
 
         case TURN_LIGHT_ON_MSG:
-            set_light_port_intensity(0.5);
+            set_light_port_intensity(0.75);
             break;
         case TURN_LIGHT_OFF_MSG:
             set_light_port_intensity(0.0);
