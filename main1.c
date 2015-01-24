@@ -34,7 +34,6 @@ int main()
     init_PWM();
     timer1_setup();
     ADC_init();
-    initUART2();
 
     initializePorts();
     initSPICommBoard();
