@@ -57,38 +57,23 @@ void putByte(uint8_t i) {
 }
 
 void __attribute__((__interrupt__,auto_psv)) _SPI1Interrupt(void){
-    /*if (SPI1STATbits.SPIROV) {
-            // error
-            SPI1STATbits.SPIROV	= 0;			// clear overflow
-            int trash = SPI1BUF;
+    if (SPI1STATbits.SPIROV) {
+        // error
+        SPI1STATbits.SPIROV	= 0;			// clear overflow
+
+        int trash = SPI1BUF;
+        putByte(55);
+        IFS0bits.SPI1IF = 0;
     } else if (!SPI1STATbits.SPIRBF) {
-            // error
-    } else {*/
+        putByte(41);
+        IFS0bits.SPI1IF = 0;
+    } else {
         // SPI1STATbits.SPIROV = 0;
 
         uint8_t buffer = SPI1BUF;
         while (SPI1STATbits.SPITBF);
-        /*if (buffer == LOAD_READ_AGAIN) {
-            if (0 <= send_state && send_state < 20) {
-                putByte(69);
-                ++send_state;
-            } else if (20 <= send_state && send_state < 30 ) {
-                if (actual_message + 1 == 69) {
-                    putByte(70);
-                } else {
-                    putByte(actual_message+1);
-                }
-                ++send_state;
-            } else if (30 <= send_state) {
-                putByte(actual_message);
-            }
-        } else {
-            // receiveMessageComm(buffer);
-            int message = buffer;
-            initate_send(message);
-            putByte(69);
-        }*/
+
         putByte(buffer);
         IFS0bits.SPI1IF = 0;
-    //}
+    }
 }
