@@ -56,7 +56,11 @@ void putByte(uint8_t i) {
     SPI1BUF = i;
 }
 
+long  long ctr = 0;
+
+
 void __attribute__((__interrupt__,auto_psv)) _SPI1Interrupt(void){
+
     if (SPI1STATbits.SPIROV) {
         // error
         SPI1STATbits.SPIROV	= 0;			// clear overflow
@@ -69,11 +73,34 @@ void __attribute__((__interrupt__,auto_psv)) _SPI1Interrupt(void){
         IFS0bits.SPI1IF = 0;
     } else {
         // SPI1STATbits.SPIROV = 0;
+        // SPI1STATbits.SPIROV = 0;
 
         uint8_t buffer = SPI1BUF;
         while (SPI1STATbits.SPITBF);
+        if (buffer == LOAD_READ_AGAIN) {
+            if (0 <= send_state && send_state < 20) {
+               putByte(69);
+                ++send_state;
+            } else if (20 <= send_state && send_state < 30 ) {
+                if (actual_message + 1 == 69) {
+                    putByte(70);
+                } else {
+                    putByte(actual_message+1);
+                }
+                ++send_state;
+            } else if (30 <= send_state) {
+                putByte(actual_message);
+            }
+        } else {
+            int message = receiveMessageComm(buffer);
+            initate_send(message);
+            putByte(69);
+        }
 
-        putByte(buffer);
         IFS0bits.SPI1IF = 0;
+    }
+    if (ctr++>1000LL){
+        initSPICommBoard();
+        ctr = 0;
     }
 }
