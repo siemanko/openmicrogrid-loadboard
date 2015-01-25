@@ -4,25 +4,8 @@
 #include "SerialCommunication.h"
 #include <spi.h>
 #include "SPI.h"
+#include "CommBoardMessageConsts.h"
 #include <stdlib.h>
-
-#define SPI_COMM_FIFO_SIZE 64 //Size of communication receive buffer
-
-char *receivePointerSPI1;
-int receiveBufferSizeSPI1 = 0;
-int bufferLenSPI1 = 0;
-
-//Used for the input receive character buffer
-char receiveBufferSPI1[SPI_COMM_FIFO_SIZE];
-char * inputStringSPI1;
-
-int SPI1_WriteFlag;     //To indicate that we are sending data and the interrupt should not ack an ack
-int outputTOCommmData;
-
-static void * float_ptr;
-int remaining = 0;
-static int outputDataInt;
-static float outputDataFloat;
 
 void initSPICommBoard(){
 
@@ -58,109 +41,54 @@ void initSPICommBoard(){
     IPC2bits.SPI1IP = 2;    //Interrupt priority for SPI1
 
     SPI1STATbits.SPIEN=1;
-
-    FIFOinitSPI1();
-
-    SPI1_WriteFlag = 0;
 }
 
-void sendPollIntToComm(int data){
-    outputDataInt = data;
-    float_ptr = &outputDataInt;
+static uint8_t actual_message = 0;
+static uint8_t send_state = 0;
 
-    //float_ptr = &data;
-    //outputData = data;
+void initate_send(uint8_t message) {
+    actual_message = message;
+    send_state = 0;
 }
 
-void sendIntToComm(int data){
-    SPI1_WriteFlag = 1;
-    IEC0bits.SPI1IE = 0;
-    writeSPI1(data);
-    IEC0bits.SPI1IE = 0;
-    SPI1_WriteFlag = 0;
-}
-
-void sendPollFloatToComm(float data){
-    outputDataFloat = data;
-    float_ptr = &outputDataFloat;
-    float_ptr+=3;
-    remaining = 4;
-}
-
-void sendFloatToComm(float data){
-    SPI1_WriteFlag = 1;
-    void *ptr = &data;
-    int i;
-    ptr+=3;
-
-    for(i=3;i>=0;i--){
-       writeSPI1(*(char *)ptr);
-       ptr--;
-    }
-    SPI1_WriteFlag = 0;
-}
-
-int writeSPI1( int i){
-    
-    SPI1BUF = i; // write to buffer for TX
-    //while( !SPI1STATbits.SPIRBF); // wait for transfer complete
-   // int buffer = SPI1BUF;
-    
-    return 1; // read the received value
-
-}//writeSPI1
-
-//Initializes receive string fifo buffer
-void FIFOinitSPI1(void){
-    bufferLenSPI1 = 0;
-    receivePointerSPI1 = receiveBufferSPI1;
-}
-
-void FIFOputSPI1(char data){
-    putUART2(data);
-
-   *receivePointerSPI1 = data;
-    receivePointerSPI1++;
-    bufferLenSPI1++;
-}
-
-
-void flushFIFOBufferSPI1(void){
-    
-    inputStringSPI1 = (char *)malloc(bufferLenSPI1*sizeof(char));
-    int i;
-    for(i=0;i<bufferLenSPI1;i++){
-        inputStringSPI1[i]=receiveBufferSPI1[i];
-    }
-     FIFOinitSPI1();
+void putByte(uint8_t i) {
+    uint8_t trahsbit = SPI1BUF;
+    SPI1BUF = i;
 }
 
 void __attribute__((__interrupt__,auto_psv)) _SPI1Interrupt(void){
+    /*if (SPI1STATbits.SPIROV) {
+            // error
+            SPI1STATbits.SPIROV	= 0;			// clear overflow
+            int trash = SPI1BUF;
+    } else if (!SPI1STATbits.SPIRBF) {
+            // error
+    } else {*/
+        // SPI1STATbits.SPIROV = 0;
 
-    int buffer = SPI1BUF;
-    if (remaining > 0) {
-        SPI1BUF = *(char *)float_ptr;
-        //delayDebug(10);
-
-        float_ptr--;
-        remaining--;
-    } else {
-        SPI1BUF = rand()%256;
-    }
-
-
-    //Simple protocol that assumes all the trash bytes we receive (i.e. real messages) are not zero
-    if(buffer != 0){
-        receiveMessageComm(buffer);
-    }
-    //This code is for an ACK (if you'd like one)
-    //Need to make sure timing is correct
-    /*
-    if(!SPI1_WriteFlag){    //Don't ack an ack
-       SPI1BUF = 6;        //Acknowledge the receipt (ACK=6)
-    } */
-
-    SPI1STATbits.SPIROV = 0;
-    IFS0bits.SPI1IF = 0;
- 
+        uint8_t buffer = SPI1BUF;
+        while (SPI1STATbits.SPITBF);
+        /*if (buffer == LOAD_READ_AGAIN) {
+            if (0 <= send_state && send_state < 20) {
+                putByte(69);
+                ++send_state;
+            } else if (20 <= send_state && send_state < 30 ) {
+                if (actual_message + 1 == 69) {
+                    putByte(70);
+                } else {
+                    putByte(actual_message+1);
+                }
+                ++send_state;
+            } else if (30 <= send_state) {
+                putByte(actual_message);
+            }
+        } else {
+            // receiveMessageComm(buffer);
+            int message = buffer;
+            initate_send(message);
+            putByte(69);
+        }*/
+        putByte(buffer);
+        IFS0bits.SPI1IF = 0;
+    //}
 }

@@ -8,7 +8,6 @@
         <itemPath>COMM_BOARD_INTERFACE.h</itemPath>
         <itemPath>CommBoardMessageConsts.h</itemPath>
         <itemPath>SPI_COMM_BOARD_DRIVER.h</itemPath>
-        <itemPath>SerialCommunication.h</itemPath>
       </logicalFolder>
       <itemPath>init.h</itemPath>
       <itemPath>EnableModel.h</itemPath>
@@ -24,7 +23,6 @@
                    projectFiles="true">
       <logicalFolder name="f1" displayName="Communications" projectFiles="true">
         <itemPath>COMM_BOARD_INTERFACE.c</itemPath>
-        <itemPath>SerialCommunication.c</itemPath>
         <itemPath>SPI_COMM_BOARD_DRIVER.c</itemPath>
       </logicalFolder>
       <itemPath>interrupt.c</itemPath>
@@ -226,25 +224,32 @@
         <property key="memories.aux" value="false"/>
         <property key="memories.bootflash" value="true"/>
         <property key="memories.configurationmemory" value="true"/>
+        <property key="memories.configurationmemory2" value="true"/>
         <property key="memories.dataflash" value="true"/>
         <property key="memories.eeprom" value="true"/>
         <property key="memories.flashdata" value="true"/>
         <property key="memories.id" value="true"/>
         <property key="memories.programmemory" value="true"/>
         <property key="memories.programmemory.end" value="0xabff"/>
+        <property key="memories.programmemory.partition2" value="true"/>
+        <property key="memories.programmemory.partition2.end"
+                  value="${memories.programmemory.partition2.end.value}"/>
+        <property key="memories.programmemory.partition2.start"
+                  value="${memories.programmemory.partition2.start.value}"/>
         <property key="memories.programmemory.start" value="0x0"/>
-        <property key="memories.userotp" value="false"/>
         <property key="poweroptions.powerenable" value="true"/>
         <property key="programmertogo.imagename" value=""/>
         <property key="programoptions.donoteraseauxmem" value="false"/>
         <property key="programoptions.eraseb4program" value="true"/>
         <property key="programoptions.pgmspeed" value="2"/>
+        <property key="programoptions.preservedataflash" value="false"/>
         <property key="programoptions.preserveeeprom" value="false"/>
         <property key="programoptions.preserveprogramrange" value="false"/>
         <property key="programoptions.preserveprogramrange.end" value="0xabff"/>
         <property key="programoptions.preserveprogramrange.start" value="0x0"/>
         <property key="programoptions.preserveuserid" value="false"/>
         <property key="programoptions.programcalmem" value="false"/>
+        <property key="programoptions.programuserotp" value="false"/>
         <property key="programoptions.testmodeentrymethod" value="VPPFirst"/>
         <property key="programoptions.usehighvoltageonmclr" value="false"/>
         <property key="programoptions.uselvpprogramming" value="false"/>

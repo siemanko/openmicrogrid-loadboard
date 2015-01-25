@@ -8,10 +8,13 @@
 #ifndef COMM_BOARD_INTERFACE_H
 #define	COMM_BOARD_INTERFACE_H
 
-void receiveMessageComm(int msg);
+#include <stdint.h>
 
 void set_communication_enable(int enabled);
 
+void receiveMessageComm(uint8_t msg);
+
+void put_float_in_buffer(float f);
 
 #endif	/* COMM_BOARD_INTERFACE_H */
 

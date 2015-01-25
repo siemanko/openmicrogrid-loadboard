@@ -7,6 +7,7 @@
 
 //Note, these need to reflect the message definitions in the comm board
 
+#define LOAD_REQUEST_DATA                           0
 #define TURN_LIGHT_ON_MSG                           1
 #define TURN_LIGHT_OFF_MSG                          2
 #define TURN_PORT1_ON_MSG                           3
@@ -19,3 +20,5 @@
 #define GET_LINE_VOLTAGE_FROM_LOAD_BOARD_MSG        8
 #define GET_PORT1_VOLTAGE_FROM_LOAD_BOARD_MSG       9
 #define GET_PORT2_VOLTAGE_FROM_LOAD_BOARD_MSG       10
+
+#define LOAD_READ_AGAIN                             11
