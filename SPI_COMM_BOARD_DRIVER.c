@@ -43,11 +43,15 @@ void initSPICommBoard(){
     SPI1STATbits.SPIEN=1;
 }
 
-static uint8_t actual_message = 0;
+static uint8_t request_message = 0;
+static uint8_t reponse_message = 0;
+int request_fulfilled;
 static uint8_t send_state = 0;
 
-void initate_send(uint8_t message) {
-    actual_message = message;
+void initate_send(uint8_t request, uint8_t response) {
+    reponse_message = response;
+    request_message = request;
+    request_fulfilled = 0;
     send_state = 0;
 }
 
@@ -82,19 +86,28 @@ void __attribute__((__interrupt__,auto_psv)) _SPI1Interrupt(void){
                putByte(69);
                 ++send_state;
             } else if (20 <= send_state && send_state < 30 ) {
-                if (actual_message + 1 == 69) {
+                if (reponse_message + 1 == 69) {
                     putByte(70);
                 } else {
-                    putByte(actual_message+1);
+                    putByte(reponse_message+1);
                 }
                 ++send_state;
             } else if (30 <= send_state) {
-                putByte(actual_message);
+                putByte(reponse_message);
+                request_fulfilled = 1;
             }
         } else {
-            int message = receiveMessageComm(buffer);
-            initate_send(message);
-            putByte(69);
+            if (buffer == request_message && !request_fulfilled) {
+                // If we received the same message but did not send reponse
+                // yet, assume this is just retramsmission of the request
+                // and do not recompute the answer. Out answers are
+                // stateful, so recomputing is bad.
+                send_state = 0;
+            } else {
+                int message = receiveMessageComm(buffer);
+                initate_send(buffer, message);
+                putByte(69);
+            }
         }
 
         IFS0bits.SPI1IF = 0;

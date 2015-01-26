@@ -48,11 +48,11 @@ int main()
     while(1){
         //set_light_port_intensity(0.5);
         //readingsUpdateStep();
-        LATGbits.LATG6 = 1;
+        /*LATGbits.LATG6 = 1;
         LATEbits.LATE7 = 1;
         for(i=0; i<100000LL; ++i);
         LATGbits.LATG6 = 0;
         LATEbits.LATE7 = 0;
-        for(i=0; i<100000LL; ++i);
+        for(i=0; i<100000LL; ++i);*/
     }
 }

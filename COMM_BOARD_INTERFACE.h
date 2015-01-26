@@ -12,7 +12,7 @@
 
 void set_communication_enable(int enabled);
 
-void receiveMessageComm(uint8_t msg);
+uint8_t receiveMessageComm(uint8_t msg);
 
 void put_float_in_buffer(float f);
 
