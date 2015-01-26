@@ -44,7 +44,7 @@ void set_light_port_intensity(float percentage) {
 }
 
 void set_port1(int on) {
-    if (port1_state == on) return;
+    // if (port1_state == on) return;
 
     if (on) LATEbits.LATE7 = 1;
     else LATEbits.LATE7 = 0;
@@ -52,7 +52,7 @@ void set_port1(int on) {
     port1_state = on;
 }
 void set_port2(int on) {
-    if (port2_state == on) return;
+    // if (port2_state == on) return;
 
     if (on) LATGbits.LATG6 = 1;
     else LATGbits.LATG6 = 0;
